@@ -1,0 +1,4389 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raihan Fadila — Portfolio</title>
+    <meta name="description" content="Portfolio personal Raihan Fadila — IT Support · Web Developer · QA Tester Manual">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* ====================================================
+   CSS VARIABLES & THEME
+==================================================== */
+        :root {
+            --bg: #0a0a0f;
+            --bg2: #111118;
+            --bg3: #16161f;
+            --surface: #1c1c28;
+            --border: rgba(255, 255, 255, 0.07);
+            --accent: #c8a96e;
+            --accent2: #e8c98e;
+            --text: #e8e6e0;
+            --text2: #9996a0;
+            --text3: #5c5966;
+            --white: #ffffff;
+            --card-bg: rgba(28, 28, 40, 0.6);
+            --glow: rgba(200, 169, 110, 0.15);
+            --font-display: 'Cormorant Garamond', serif;
+            --font-body: 'DM Sans', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        [data-theme="light"] {
+            --bg: #f5f3ef;
+            --bg2: #eeece8;
+            --bg3: #e8e5df;
+            --surface: #ffffff;
+            --border: rgba(0, 0, 0, 0.08);
+            --text: #1a1814;
+            --text2: #5a5650;
+            --text3: #9a9690;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --glow: rgba(200, 169, 110, 0.1);
+        }
+
+        /* ====================================================
+   RESET & BASE
+==================================================== */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.65;
+            overflow-x: hidden;
+            cursor: none;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        /* ====================================================
+   CUSTOM CURSOR
+==================================================== */
+        #cursor {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s, background 0.3s;
+            mix-blend-mode: normal;
+        }
+
+        #cursor-ring {
+            width: 36px;
+            height: 36px;
+            border: 1.5px solid var(--accent);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9998;
+            transform: translate(-50%, -50%);
+            transition: all 0.18s ease-out;
+            opacity: 0.5;
+        }
+
+        body:hover #cursor {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        a:hover~#cursor,
+        button:hover~#cursor {
+            transform: translate(-50%, -50%) scale(2.5);
+        }
+
+        /* ====================================================
+   PRELOADER
+==================================================== */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            z-index: 99999;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #preloader.hide {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .preloader-name {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 300;
+            letter-spacing: 0.15em;
+            color: var(--accent);
+            overflow: hidden;
+        }
+
+        .preloader-name span {
+            display: inline-block;
+            animation: preCharIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(40px);
+        }
+
+        @keyframes preCharIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .preloader-bar {
+            width: 200px;
+            height: 1px;
+            background: var(--border);
+            margin-top: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .preloader-bar::after {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--accent);
+            animation: barLoad 1.8s ease forwards;
+        }
+
+        @keyframes barLoad {
+            to {
+                left: 0;
+            }
+        }
+
+        /* ====================================================
+   NAVBAR
+==================================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 clamp(1.5rem, 4vw, 4rem);
+            height: 72px;
+            background: transparent;
+            transition: background 0.4s ease, backdrop-filter 0.4s ease, border-bottom 0.4s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 10, 15, 0.88);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        [data-theme="light"] .navbar.scrolled {
+            background: rgba(245, 243, 239, 0.88);
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.35rem;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .nav-logo span {
+            color: var(--text);
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            font-size: 0.82rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--text2);
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--accent);
+            transition: width 0.35s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle {
+            width: 44px;
+            height: 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .theme-toggle::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 16px;
+            height: 16px;
+            background: var(--accent);
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        [data-theme="light"] .theme-toggle::after {
+            transform: translateX(20px);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 1.5px;
+            background: var(--text);
+            transition: all 0.3s;
+        }
+
+        /* Mobile nav */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+            background: var(--bg);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2.5rem;
+        }
+
+        .mobile-nav.open {
+            display: flex;
+        }
+
+        .mobile-nav a {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 0.08em;
+            color: var(--text);
+            transition: color 0.3s;
+        }
+
+        .mobile-nav a:hover {
+            color: var(--accent);
+        }
+
+        /* ====================================================
+   SCROLL REVEAL
+==================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-left {
+            opacity: 0;
+            transform: translateX(-40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .reveal-right {
+            opacity: 0;
+            transform: translateX(40px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* ====================================================
+   SECTION UTILITIES
+==================================================== */
+        .section {
+            padding: clamp(5rem, 10vw, 9rem) clamp(1.5rem, 6vw, 7rem);
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 2rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 300;
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .section-sub {
+            font-size: 1rem;
+            color: var(--text2);
+            max-width: 560px;
+            margin-top: 1rem;
+        }
+
+        .divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ====================================================
+   HERO
+==================================================== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 0 clamp(1.5rem, 6vw, 7rem) clamp(4rem, 8vw, 6rem);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .hero-bg-gradient {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(200, 169, 110, 0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 50% 50% at 10% 80%, rgba(200, 169, 110, 0.04) 0%, transparent 50%);
+        }
+
+        .hero-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(var(--border) 1px, transparent 1px),
+                linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+            opacity: 0.4;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1280px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s 1.8s ease forwards;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hero-eyebrow::before {
+            content: '';
+            width: 2rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .hero-name {
+            font-family: var(--font-display);
+            font-size: clamp(3.5rem, 9vw, 8rem);
+            font-weight: 300;
+            line-height: 1.0;
+            letter-spacing: -0.01em;
+            overflow: hidden;
+        }
+
+        .hero-name .line {
+            display: block;
+            overflow: hidden;
+        }
+
+        .hero-name .line span {
+            display: block;
+            opacity: 0;
+            transform: translateY(100%);
+            animation: lineReveal 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .hero-name .line:nth-child(1) span {
+            animation-delay: 1.8s;
+        }
+
+        .hero-name .line:nth-child(2) span {
+            animation-delay: 1.95s;
+            color: var(--accent);
+            font-style: italic;
+        }
+
+        @keyframes lineReveal {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-tagline {
+            margin-top: 2.5rem;
+            font-size: 1rem;
+            color: var(--text2);
+            max-width: 480px;
+            opacity: 0;
+            animation: fadeUp 0.8s 2.2s ease forwards;
+        }
+
+        .hero-cta {
+            margin-top: 3rem;
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s 2.4s ease forwards;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.85rem 2rem;
+            font-size: 0.82rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-family: var(--font-body);
+            font-weight: 500;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #0a0a0f;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent2);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px var(--glow);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 3rem;
+            flex-wrap: wrap;
+            margin-top: 4rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+            opacity: 0;
+            animation: fadeUp 0.8s 2.6s ease forwards;
+        }
+
+        .hero-stat-item {}
+
+        .hero-stat-num {
+            font-family: var(--font-display);
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--text2);
+            margin-top: 0.35rem;
+        }
+
+        .hero-photo {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            z-index: 1;
+            width: clamp(250px, 32vw, 480px);
+            height: clamp(350px, 55vh, 700px);
+            overflow: hidden;
+            mask-image: linear-gradient(to top, transparent 0%, black 40%),
+                linear-gradient(to right, transparent 0%, black 20%);
+            mask-composite: intersect;
+            opacity: 0.65;
+        }
+
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            filter: grayscale(20%) contrast(1.05);
+        }
+
+        .hero-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--bg3) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-photo-placeholder svg {
+            width: 80px;
+            opacity: 0.2;
+        }
+
+        /* Scroll indicator */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0;
+            animation: fadeUp 1s 3s ease forwards;
+        }
+
+        .scroll-indicator span {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text3);
+        }
+
+        .scroll-line {
+            width: 1px;
+            height: 50px;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            animation: scrollLine 2s ease infinite;
+        }
+
+        @keyframes scrollLine {
+            0% {
+                transform: scaleY(0);
+                transform-origin: top;
+            }
+
+            50% {
+                transform: scaleY(1);
+                transform-origin: top;
+            }
+
+            51% {
+                transform: scaleY(1);
+                transform-origin: bottom;
+            }
+
+            100% {
+                transform: scaleY(0);
+                transform-origin: bottom;
+            }
+        }
+
+        /* ====================================================
+   ABOUT
+==================================================== */
+        #about {
+            background: var(--bg2);
+        }
+
+        .about-inner {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: clamp(3rem, 6vw, 7rem);
+            align-items: center;
+        }
+
+        .about-photo-wrap {
+            position: relative;
+        }
+
+        .about-photo-frame {
+            aspect-ratio: 3/4;
+            border-radius: var(--radius);
+            overflow: hidden;
+            position: relative;
+            background: var(--surface);
+        }
+
+        .about-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.6s ease;
+        }
+
+        .about-photo-frame:hover img {
+            transform: scale(1.04);
+        }
+
+        .about-photo-frame-border {
+            position: absolute;
+            top: 1.5rem;
+            left: 1.5rem;
+            right: -1.5rem;
+            bottom: -1.5rem;
+            border: 1px solid var(--accent);
+            border-radius: var(--radius);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .about-badge {
+            position: absolute;
+            bottom: -1.5rem;
+            right: -1.5rem;
+            background: var(--accent);
+            color: #0a0a0f;
+            padding: 1.25rem 1.5rem;
+            border-radius: var(--radius-sm);
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .about-badge .num {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            line-height: 1;
+            display: block;
+        }
+
+        .about-badge .lbl {
+            font-size: 0.7rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .about-text {}
+
+        .about-quote {
+            font-family: var(--font-display);
+            font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+            font-style: italic;
+            line-height: 1.6;
+            color: var(--text2);
+            margin: 1.5rem 0 2rem;
+            padding-left: 1.5rem;
+            border-left: 2px solid var(--accent);
+        }
+
+        .about-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .about-info-item {}
+
+        .about-info-item .key {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 0.3rem;
+        }
+
+        .about-info-item .val {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .about-info-item .val a {
+            color: var(--accent);
+        }
+
+        .about-info-item .val a:hover {
+            text-decoration: underline;
+        }
+
+        /* ====================================================
+   SKILLS
+==================================================== */
+        /* #skills removed */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .skill-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            backdrop-filter: blur(12px);
+            transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+        }
+
+        .skill-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px var(--glow);
+        }
+
+        .skill-card-category {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .skill-tag {
+            display: inline-block;
+            padding: 0.35rem 0.8rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: var(--text2);
+            margin: 0.3rem 0.25rem;
+            transition: all 0.25s;
+        }
+
+        .skill-tag:hover {
+            background: var(--accent);
+            color: #0a0a0f;
+            border-color: var(--accent);
+        }
+
+        /* ====================================================
+   SERVICES
+==================================================== */
+        #services {
+            background: var(--bg2);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .service-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            cursor: default;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--glow) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-6px);
+            box-shadow: 0 30px 80px var(--glow);
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.25rem;
+            transition: transform 0.3s;
+        }
+
+        .service-card:hover .service-icon {
+            transform: scale(1.15);
+        }
+
+        .service-title {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-desc {
+            font-size: 0.88rem;
+            color: var(--text2);
+            line-height: 1.7;
+        }
+
+        .service-num {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text3);
+            letter-spacing: 0.1em;
+        }
+
+        /* ====================================================
+   EXPERIENCE (TIMELINE)
+==================================================== */
+        #experience {
+            background: var(--bg);
+        }
+
+        .timeline {
+            margin-top: 3.5rem;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            width: 1px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            padding-left: 3.5rem;
+            padding-bottom: 3.5rem;
+            position: relative;
+        }
+
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 13px;
+            height: 13px;
+            background: var(--bg);
+            border: 2px solid var(--accent);
+            border-radius: 50%;
+            transition: background 0.3s, box-shadow 0.3s;
+        }
+
+        .timeline-item:hover .timeline-dot {
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--glow);
+        }
+
+        .timeline-period {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 400;
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-company {
+            font-size: 0.85rem;
+            color: var(--text2);
+            margin-bottom: 1.25rem;
+        }
+
+        .timeline-bullets {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .timeline-bullets li {
+            font-size: 0.88rem;
+            color: var(--text2);
+            padding-left: 1.25rem;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .timeline-bullets li::before {
+            content: '—';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-size: 0.8rem;
+        }
+
+        /* ====================================================
+   CERTIFICATIONS
+==================================================== */
+        #certifications {
+            background: var(--bg2);
+        }
+
+        .cert-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .cert-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+        }
+
+        .cert-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-5px);
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.3);
+        }
+
+        .cert-card.has-img {
+            cursor: pointer;
+        }
+
+        /* Cert image area */
+        .cert-img-wrap {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.85rem;
+        }
+
+        .cert-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            display: block;
+            border-radius: 6px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+        }
+
+        .cert-card.has-img:hover .cert-img-wrap img {
+            transform: scale(1.04);
+            filter: brightness(0.85);
+        }
+
+        .cert-img-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.25);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .cert-card.has-img:hover .cert-img-overlay {
+            opacity: 1;
+        }
+
+        .cert-img-zoom {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.55rem 1.1rem;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            font-size: 0.78rem;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            transform: translateY(8px);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .cert-card.has-img:hover .cert-img-zoom {
+            transform: translateY(0);
+        }
+
+        /* No-image variant: icon block instead */
+        .cert-icon-block {
+            width: 100%;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+            flex-shrink: 0;
+        }
+
+        .cert-icon-block span {
+            font-size: 2.25rem;
+            opacity: 0.7;
+        }
+
+        /* Body */
+        .cert-body {
+            padding: 1.4rem 1.5rem 1.6rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cert-category {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cert-category::before {
+            content: '';
+            width: 1rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .cert-title {
+            font-family: var(--font-display);
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text);
+            line-height: 1.35;
+            margin-bottom: 0.5rem;
+        }
+
+        .cert-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: auto;
+            padding-top: 0.9rem;
+            border-top: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .cert-issuer {
+            font-size: 0.78rem;
+            color: var(--text2);
+        }
+
+        .cert-year {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text3);
+            letter-spacing: 0.05em;
+        }
+
+        @media (max-width: 768px) {
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- Project Thumbnail ---- */
+        .proj-thumb {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+            background: var(--surface);
+            border-radius: var(--radius) var(--radius) 0 0;
+            flex-shrink: 0;
+        }
+
+        .proj-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+            display: block;
+        }
+
+        .proj-card:hover .proj-thumb img {
+            transform: scale(1.06);
+            filter: brightness(0.75);
+        }
+
+        .proj-thumb-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+        }
+
+        .proj-thumb-placeholder span {
+            font-family: var(--font-display);
+            font-size: 5rem;
+            font-weight: 300;
+            color: var(--border);
+            line-height: 1;
+        }
+
+        .proj-thumb-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.35s ease;
+        }
+
+        .proj-card:hover .proj-thumb-overlay {
+            opacity: 1;
+        }
+
+        .proj-thumb-zoom {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.25rem;
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            color: white;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transform: translateY(8px);
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .proj-card:hover .proj-thumb-zoom {
+            transform: translateY(0);
+        }
+
+        /* proj-card cursor clickable */
+        .proj-card {
+            cursor: pointer;
+        }
+
+        /* ---- Modal Overlay ---- */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: rgba(0, 0, 0, 0.75);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ---- Modal Box ---- */
+        .modal-box {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: calc(var(--radius) + 4px);
+            width: 100%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            transform: translateY(30px) scale(0.97);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        .modal-overlay.open .modal-box {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-box::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .modal-box::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 2px;
+        }
+
+        /* Close button */
+        .modal-close {
+            position: sticky;
+            top: 1rem;
+            float: right;
+            margin: 1rem 1rem 0 0;
+            width: 36px;
+            height: 36px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text2);
+            transition: all 0.25s;
+            z-index: 2;
+        }
+
+        .modal-close:hover {
+            background: var(--accent);
+            color: #0a0a0f;
+            border-color: var(--accent);
+            transform: rotate(90deg);
+        }
+
+        /* Prev / Next nav */
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 38px;
+            height: 38px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text2);
+            transition: all 0.25s;
+            z-index: 3;
+        }
+
+        .modal-nav:hover {
+            background: var(--accent);
+            color: #0a0a0f;
+            border-color: var(--accent);
+        }
+
+        .modal-prev {
+            left: -52px;
+        }
+
+        .modal-next {
+            right: -52px;
+        }
+
+        @media (max-width: 768px) {
+
+            .modal-prev,
+            .modal-next {
+                display: none;
+            }
+        }
+
+        /* Modal image */
+        .modal-img-wrap {
+            width: 100%;
+            height: 280px;
+            overflow: hidden;
+            position: relative;
+            border-radius: calc(var(--radius) + 4px) calc(var(--radius) + 4px) 0 0;
+            background: var(--surface);
+            flex-shrink: 0;
+        }
+
+        .modal-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-img-wrap img.loading {
+            opacity: 0;
+        }
+
+        .modal-img-placeholder {
+            position: absolute;
+            inset: 0;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--surface) 0%, var(--bg) 100%);
+        }
+
+        .modal-img-placeholder span {
+            font-family: var(--font-display);
+            font-size: 6rem;
+            font-weight: 300;
+            color: var(--border);
+            line-height: 1;
+        }
+
+        .modal-img-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+        }
+
+        /* Modal content */
+        .modal-content {
+            padding: 2rem 2rem 2rem;
+            clear: both;
+        }
+
+        .modal-meta {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-tag {
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .modal-tag::before {
+            content: '';
+            width: 1rem;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .modal-counter {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            color: var(--text3);
+            letter-spacing: 0.1em;
+        }
+
+        .modal-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.4rem, 3vw, 1.9rem);
+            font-weight: 400;
+            line-height: 1.25;
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .modal-desc {
+            font-size: 0.9rem;
+            color: var(--text2);
+            line-height: 1.85;
+        }
+
+        .modal-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border);
+            margin: 1.75rem 0;
+        }
+
+        .modal-bottom {}
+
+        .modal-info-row {
+            display: flex;
+            gap: 2.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-info-item {}
+
+        .modal-info-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 0.3rem;
+        }
+
+        .modal-info-val {
+            font-size: 0.88rem;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .modal-stack {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+
+        .modal-stack .proj-pill {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.85rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text2);
+        }
+
+        /* Light mode modal */
+        [data-theme="light"] .modal-box {
+            background: var(--surface);
+        }
+
+        [data-theme="light"] .modal-overlay {
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        /* ====================================================
+   MY FAVOURITE TOOLS
+==================================================== */
+        #tools {
+            background: var(--bg);
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1.25rem;
+            margin-top: 3.5rem;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.75rem 1rem 1.25rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.85rem;
+            text-align: center;
+            cursor: default;
+            backdrop-filter: blur(12px);
+            position: relative;
+            overflow: hidden;
+            transition: border-color 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--tool-glow, rgba(200, 169, 110, 0.12)) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .tool-card:hover::before {
+            opacity: 1;
+        }
+
+        .tool-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: var(--tool-color, var(--accent));
+            border-radius: 2px 2px 0 0;
+            transform: scaleX(0);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .tool-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .tool-card:hover {
+            border-color: var(--tool-color, var(--accent));
+            transform: translateY(-6px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        .tool-icon-wrap {
+            width: 60px;
+            height: 60px;
+            border-radius: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: border-color 0.35s, box-shadow 0.35s, transform 0.35s;
+            flex-shrink: 0;
+        }
+
+        .tool-card:hover .tool-icon-wrap {
+            border-color: var(--tool-color, var(--accent));
+            box-shadow: 0 0 20px var(--tool-glow, rgba(200, 169, 110, 0.2));
+            transform: scale(1.1);
+        }
+
+        .tool-icon-wrap svg {
+            width: 34px;
+            height: 34px;
+            transition: transform 0.35s;
+        }
+
+        .tool-card:hover .tool-icon-wrap svg {
+            transform: scale(1.08);
+        }
+
+        .tool-name {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text2);
+            letter-spacing: 0.03em;
+            line-height: 1.3;
+            transition: color 0.3s;
+        }
+
+        .tool-card:hover .tool-name {
+            color: var(--tool-color, var(--accent));
+        }
+
+        .tool-category {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-top: -0.2rem;
+        }
+
+        @media (max-width: 600px) {
+            .tools-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.85rem;
+            }
+
+            .tool-icon-wrap {
+                width: 48px;
+                height: 48px;
+            }
+
+            .tool-icon-wrap svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .tool-name {
+                font-size: 0.72rem;
+            }
+        }
+
+        /* ====================================================
+   MARQUEE
+==================================================== */
+        .marquee-section {
+            padding: 3rem 0;
+            overflow: hidden;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            background: var(--bg3);
+            position: relative;
+        }
+
+        .marquee-track {
+            display: flex;
+            gap: 3rem;
+            white-space: nowrap;
+            animation: marqueeScroll 28s linear infinite;
+        }
+
+        .marquee-section:hover .marquee-track {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            from {
+                transform: translateX(0);
+            }
+
+            to {
+                transform: translateX(-50%);
+            }
+        }
+
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            font-family: var(--font-display);
+            font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+            font-weight: 300;
+            font-style: italic;
+            color: var(--text2);
+            white-space: nowrap;
+        }
+
+        .marquee-dot {
+            width: 5px;
+            height: 5px;
+            background: var(--accent);
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        /* ====================================================
+   CONTACT
+==================================================== */
+        #contact {
+            background: var(--bg);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: clamp(3rem, 6vw, 7rem);
+            margin-top: 3.5rem;
+        }
+
+        .contact-info {}
+
+        .contact-info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .contact-info-icon {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+            transition: border-color 0.3s, background 0.3s;
+        }
+
+        .contact-info-item:hover .contact-info-icon {
+            border-color: var(--accent);
+            background: var(--glow);
+        }
+
+        .contact-info-label {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-info-val {
+            font-size: 0.9rem;
+            color: var(--text);
+        }
+
+        .contact-info-val a:hover {
+            color: var(--accent);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 2.5rem;
+            padding-top: 2.5rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .social-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.65rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .social-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        .social-btn.whatsapp:hover {
+            border-color: #25D366;
+            color: #25D366;
+        }
+
+        /* Contact Form */
+        .contact-form {}
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 0.9rem 1.25rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: var(--font-body);
+            font-size: 0.9rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+            resize: none;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--glow);
+        }
+
+        .form-textarea {
+            height: 140px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .form-notice {
+            font-size: 0.78rem;
+            color: var(--text3);
+            margin-top: 0.75rem;
+        }
+
+        .form-success {
+            display: none;
+            padding: 1rem 1.5rem;
+            background: rgba(200, 169, 110, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: var(--radius-sm);
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        /* ====================================================
+   FOOTER
+==================================================== */
+        footer {
+            padding: 3rem clamp(1.5rem, 6vw, 7rem);
+            background: var(--bg2);
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 300;
+            color: var(--text2);
+        }
+
+        .footer-logo strong {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .footer-copy {
+            font-size: 0.78rem;
+            color: var(--text3);
+            letter-spacing: 0.05em;
+        }
+
+        .footer-back-top {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.78rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text2);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .footer-back-top:hover {
+            color: var(--accent);
+        }
+
+        .footer-back-top svg {
+            width: 14px;
+        }
+
+        /* ====================================================
+   RESPONSIVE
+==================================================== */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .about-inner {
+                grid-template-columns: 1fr;
+            }
+
+            .about-photo-wrap {
+                display: none;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-photo {
+                opacity: 0.3;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .about-info {
+                grid-template-columns: 1fr;
+            }
+
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .hero-stats {
+                gap: 2rem;
+            }
+
+            .services-grid,
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .cert-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            #cursor,
+            #cursor-ring {
+                display: none;
+            }
+        }
+
+        /* ====================================================
+   PROJECTS — NUMBERED GRID
+==================================================== */
+        #projects {
+            background: var(--bg3);
+        }
+
+        .proj-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.75rem;
+            margin-top: 3.5rem;
+        }
+
+        .proj-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            transition: border-color 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animated color stripe on top */
+        .proj-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--proj-color, var(--accent));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 2;
+        }
+
+        .proj-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        /* Subtle glow overlay on hover */
+        .proj-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255, 255, 255, 0.03) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+
+        .proj-card:hover::after {
+            opacity: 1;
+        }
+
+        .proj-card:hover {
+            transform: translateY(-7px);
+            border-color: rgba(255, 255, 255, 0.13);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.04);
+        }
+
+        /* Card body padding wrapper */
+        .proj-body {
+            padding: 2.5rem 2rem 2rem;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        /* Big decorative number */
+        .proj-num {
+            font-family: var(--font-display);
+            font-size: 5.5rem;
+            font-weight: 300;
+            line-height: 0.9;
+            color: var(--border);
+            user-select: none;
+            transition: color 0.4s ease, opacity 0.4s ease;
+            margin-bottom: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .proj-card:hover .proj-num {
+            color: var(--proj-color, var(--accent));
+            opacity: 0.22;
+        }
+
+        .proj-tag {
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--proj-color, var(--accent));
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .proj-tag::before {
+            content: '';
+            width: 1.25rem;
+            height: 1px;
+            background: var(--proj-color, var(--accent));
+            flex-shrink: 0;
+        }
+
+        .proj-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.15rem, 1.9vw, 1.4rem);
+            font-weight: 400;
+            line-height: 1.3;
+            color: var(--text);
+            margin-bottom: 1rem;
+            transition: color 0.3s;
+        }
+
+        .proj-card:hover .proj-title {
+            color: var(--text);
+        }
+
+        .proj-desc {
+            font-size: 0.855rem;
+            color: var(--text2);
+            line-height: 1.8;
+            flex: 1;
+            margin-bottom: 1.75rem;
+        }
+
+        /* Divider */
+        .proj-footer {
+            border-top: 1px solid var(--border);
+            padding: 1.1rem 2rem 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            transition: border-color 0.3s;
+        }
+
+        .proj-card:hover .proj-footer {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .proj-meta-left {}
+
+        .proj-role-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-bottom: 0.2rem;
+        }
+
+        .proj-role-val {
+            font-size: 0.78rem;
+            color: var(--text2);
+        }
+
+        .proj-year {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--proj-color, var(--accent));
+            margin-top: 0.2rem;
+        }
+
+        .proj-stack {
+            display: flex;
+            gap: 0.35rem;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: flex-start;
+            max-width: 55%;
+        }
+
+        .proj-pill {
+            font-size: 0.7rem;
+            padding: 0.22rem 0.65rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text2);
+            letter-spacing: 0.03em;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .proj-card:hover .proj-pill {
+            border-color: var(--proj-color, var(--accent));
+            color: var(--proj-color, var(--accent));
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Arrow top-right */
+        .proj-arrow {
+            position: absolute;
+            top: 1.6rem;
+            right: 1.8rem;
+            width: 28px;
+            height: 28px;
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--text3);
+            opacity: 0;
+            transform: translate(-6px, 6px) rotate(-45deg);
+            transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, color 0.3s;
+        }
+
+        .proj-card:hover .proj-arrow {
+            opacity: 1;
+            transform: translate(0, 0) rotate(0deg);
+            border-color: var(--proj-color, var(--accent));
+            color: var(--proj-color, var(--accent));
+        }
+
+        /* Featured label */
+        .proj-featured {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            position: absolute;
+            top: 1.7rem;
+            left: 2rem;
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 0.25rem 0.65rem;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            color: var(--text3);
+            transition: all 0.3s;
+        }
+
+        .proj-featured::before {
+            content: '';
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: var(--proj-color, var(--accent));
+        }
+
+        .proj-card:hover .proj-featured {
+            border-color: var(--proj-color, var(--accent));
+            color: var(--proj-color, var(--accent));
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* Light mode adjustments */
+        [data-theme="light"] .proj-card:hover {
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+        }
+
+        [data-theme="light"] .proj-card::after {
+            background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0, 0, 0, 0.015) 0%, transparent 70%);
+        }
+
+        @media (max-width: 768px) {
+            .proj-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .proj-num {
+                font-size: 4rem;
+            }
+
+            .proj-stack {
+                max-width: 100%;
+                justify-content: flex-start;
+            }
+
+            .proj-footer {
+                flex-direction: column;
+            }
+        }
+
+        /* ====================================================
+   EDUCATION STRIP
+==================================================== */
+        .edu-strip {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 3.5rem;
+        }
+
+        .edu-icon {
+            font-size: 2.5rem;
+            flex-shrink: 0;
+        }
+
+        .edu-info {}
+
+        .edu-univ {
+            font-family: var(--font-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 0.2rem;
+        }
+
+        .edu-degree {
+            font-size: 0.85rem;
+            color: var(--text2);
+            margin-bottom: 0.5rem;
+        }
+
+        .edu-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.3rem 0.8rem;
+            background: rgba(200, 169, 110, 0.12);
+            border: 1px solid rgba(200, 169, 110, 0.3);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            color: var(--accent);
+            letter-spacing: 0.05em;
+        }
+
+        .edu-gpa {
+            margin-left: auto;
+            text-align: center;
+        }
+
+        .edu-gpa .num {
+            font-family: var(--font-display);
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--accent);
+            line-height: 1;
+        }
+
+        .edu-gpa .lbl {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            margin-top: 0.25rem;
+        }
+
+        /* ====================================================
+   DOWNLOAD CV BUTTON
+==================================================== */
+        .btn-cv-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            backdrop-filter: blur(12px);
+            cursor: pointer;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            width: 100%;
+        }
+
+        .btn-cv-download::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--accent);
+            transition: width 0.4s ease;
+            z-index: 0;
+        }
+
+        .btn-cv-download:hover::after {
+            width: 100%;
+            opacity: 0.07;
+        }
+
+        .btn-cv-download:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 40px var(--glow);
+        }
+
+        .btn-cv-icon {
+            width: 42px;
+            height: 42px;
+            background: var(--accent);
+            color: #0a0a0f;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+            transition: transform 0.35s ease;
+        }
+
+        .btn-cv-download:hover .btn-cv-icon {
+            transform: translateY(3px);
+        }
+
+        .btn-cv-text {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: 0.02em;
+            flex: 1;
+            position: relative;
+            z-index: 1;
+            transition: color 0.3s;
+        }
+
+        .btn-cv-download:hover .btn-cv-text {
+            color: var(--accent);
+        }
+
+        .btn-cv-sub {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text3);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Plakat row layout */
+        .plakat-row {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 1.25rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            backdrop-filter: blur(8px);
+            flex-wrap: wrap;
+        }
+
+        .plakat-thumb-wrap {
+            width: 70px;
+            height: 70px;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            background: var(--surface);
+        }
+
+        .plakat-thumb-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .plakat-row-info {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .plakat-row-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 0.2rem;
+        }
+
+        .plakat-row-title {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .plakat-row-sub {
+            font-size: 0.75rem;
+            color: var(--text2);
+            margin-top: 0.1rem;
+        }
+
+        /* Tombol Lihat Foto */
+        .plakat-view-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            padding: 0.55rem 1.1rem;
+            background: var(--accent);
+            color: #0a0a0f;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
+        }
+
+        .plakat-view-btn:hover {
+            background: var(--accent2);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px var(--glow);
+        }
+
+        .plakat-view-btn:active {
+            transform: translateY(0);
+        }
+
+        .edu-plakat {
+            width: 110px;
+            height: 110px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            position: relative;
+            flex-shrink: 0;
+            background: var(--surface);
+            padding: 0;
+            outline: none;
+            display: block;
+            transition: border-color 0.3s, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s;
+        }
+
+        .edu-plakat:hover {
+            border-color: var(--accent);
+            transform: scale(1.06);
+            box-shadow: 0 8px 30px var(--glow);
+        }
+
+        .edu-plakat:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 3px;
+        }
+
+        .edu-plakat img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+            transition: transform 0.4s ease;
+            pointer-events: none;
+        }
+
+        .edu-plakat:hover img {
+            transform: scale(1.08);
+        }
+
+        .edu-plakat-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            color: white;
+            pointer-events: none;
+        }
+
+        .edu-plakat:hover .edu-plakat-overlay {
+            opacity: 1;
+        }
+
+        .edu-plakat-empty {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            font-size: 1.5rem;
+            pointer-events: none;
+        }
+
+        .edu-plakat-empty small {
+            font-size: 0.52rem;
+            color: var(--text3);
+            font-family: var(--font-mono);
+            letter-spacing: 0.05em;
+            text-align: center;
+        }
+
+        /* ====================================================
+   PLAKAT LIGHTBOX
+==================================================== */
+        .plakat-lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 10001;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
+            cursor: zoom-out;
+        }
+
+        .plakat-lightbox.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: all;
+        }
+
+        .plakat-lightbox-inner {
+            position: relative;
+            max-width: 500px;
+            width: 100%;
+            cursor: default;
+            transform: scale(0.88) translateY(20px);
+            transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .plakat-lightbox.open .plakat-lightbox-inner {
+            transform: scale(1) translateY(0);
+        }
+
+        .plakat-lightbox-inner img {
+            width: 100%;
+            border-radius: var(--radius);
+            display: block;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plakat-close {
+            position: absolute;
+            top: -14px;
+            right: -14px;
+            width: 38px;
+            height: 38px;
+            background: var(--accent);
+            color: #0a0a0f;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 2;
+            transition: transform 0.3s ease, background 0.3s;
+            box-shadow: 0 4px 20px var(--glow);
+        }
+
+        .plakat-close:hover {
+            transform: rotate(90deg) scale(1.12);
+            background: var(--accent2);
+        }
+
+        .plakat-caption {
+            margin-top: 1.25rem;
+            text-align: center;
+        }
+
+        .plakat-caption-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            font-weight: 400;
+            color: var(--accent);
+            margin-bottom: 0.3rem;
+        }
+
+        .plakat-caption-sub {
+            font-size: 0.8rem;
+            color: var(--text3);
+            letter-spacing: 0.04em;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- CUSTOM CURSOR -->
+    <div id="cursor"></div>
+    <div id="cursor-ring"></div>
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="preloader-name" id="preloader-name"></div>
+        <div class="preloader-bar"></div>
+    </div>
+
+    <!-- MOBILE NAV -->
+    <nav class="mobile-nav" id="mobileNav">
+        <a href="#about" onclick="closeMobileNav()">Tentang</a>
+        <a href="#services" onclick="closeMobileNav()">Layanan</a>
+        <a href="#projects" onclick="closeMobileNav()">Proyek</a>
+        <a href="#experience" onclick="closeMobileNav()">Pengalaman</a>
+        <a href="#certifications" onclick="closeMobileNav()">Sertifikasi</a>
+        <a href="#tools" onclick="closeMobileNav()">Tools</a>
+        <a href="#contact" onclick="closeMobileNav()">Kontak</a>
+    </nav>
+
+    <!-- NAVBAR -->
+    <header class="navbar" id="navbar">
+        <div class="nav-logo">Raihan Fadila</div>
+        <nav class="nav-links">
+            <a href="#about">Tentang</a>
+            <a href="#services">Layanan</a>
+            <a href="#projects">Proyek</a>
+            <a href="#experience">Pengalaman</a>
+            <a href="#certifications">Sertifikasi</a>
+            <a href="#tools">Tools</a>
+            <a href="#contact">Kontak</a>
+        </nav>
+        <div class="nav-right">
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Ganti tema"></button>
+            <div class="hamburger" id="hamburger" onclick="toggleMobileNav()">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ====================================================
+     HERO
+==================================================== -->
+    <section class="hero" id="home">
+        <div class="hero-bg">
+            <div class="hero-bg-gradient"></div>
+            <div class="hero-grid"></div>
+        </div>
+
+        <!-- Photo right side -->
+        <div class="hero-photo">
+                            <img src="photos.jpeg" alt="Raihan Fadila">
+                    </div>
+
+        <div class="hero-content">
+            <div class="hero-eyebrow">Portfolio Personal</div>
+            <h1 class="hero-name">
+                <span class="line"><span>Raihan</span></span>
+                <span class="line"><span>Fadila.</span></span>
+            </h1>
+            <p class="hero-tagline">IT Support · Web Developer · QA Tester Manual — Lulusan Terbaik Teknik Informatika UNPAM.</p>
+            <div class="hero-cta">
+                <a href="#contact" class="btn btn-primary">Hubungi Saya →</a>
+                <a href="#experience" class="btn btn-outline">Lihat Pengalaman</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <div class="hero-stat-num">3.75</div>
+                    <div class="hero-stat-label">IPK</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-num">5+</div>
+                    <div class="hero-stat-label">Pengalaman Kerja</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-num">10+</div>
+                    <div class="hero-stat-label">Sertifikasi</div>
+                </div>
+                <div class="hero-stat-item">
+                    <div class="hero-stat-num">#1</div>
+                    <div class="hero-stat-label">Wisudawan Terbaik</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     ABOUT
+==================================================== -->
+    <section id="about" style="background: var(--bg2);">
+        <div class="section">
+            <div class="about-inner">
+                <div class="about-photo-wrap reveal-left">
+                    <div class="about-photo-frame">
+                                                    <img src="photos.jpeg" alt="Raihan Fadila">
+                                            </div>
+                    <div class="about-photo-frame-border"></div>
+                    <div class="about-badge">
+                        <span class="num">3.75</span>
+                        <span class="lbl">IPK</span>
+                    </div>
+                </div>
+
+                <div class="about-text reveal-right">
+                    <div class="section-label">Tentang Saya</div>
+                    <h2 class="section-title">Profesional IT<br>yang <em>Adaptif</em></h2>
+                    <blockquote class="about-quote">
+                        "Analitis, adaptif, dan berkomitmen penuh untuk memberikan kontribusi nyata bagi efisiensi operasional."
+                    </blockquote>
+                    <p style="color:var(--text2); font-size:0.92rem; line-height:1.8;">Lulusan Teknik Informatika Universitas Pamulang dengan IPK 3.75 dan predikat Wisudawan Terbaik Periode ke-120. Berpengalaman praktis sebagai IT Support Intern di RS An-Nisa Tangerang, dengan keahlian di bidang pengembangan web, analisis data, serta IT Support dan troubleshooting. Adaptif, analitis, dan berkomitmen memberikan kontribusi nyata bagi efisiensi operasional perusahaan.</p>
+
+                    <div class="about-info">
+                        <div class="about-info-item">
+                            <div class="key">Universitas</div>
+                            <div class="val">Universitas Pamulang (UNPAM)</div>
+                        </div>
+                        <div class="about-info-item">
+                            <div class="key">Program Studi</div>
+                            <div class="val">S1 Teknik Informatika</div>
+                        </div>
+                        <div class="about-info-item">
+                            <div class="key">Email</div>
+                            <div class="val"><a href="mailto:raihanfadila8@gmail.com">raihanfadila8@gmail.com</a></div>
+                        </div>
+                        <div class="about-info-item">
+                            <div class="key">Lokasi</div>
+                            <div class="val">Tangerang, Banten, Indonesia</div>
+                        </div>
+                        <div class="about-info-item">
+                            <div class="key">Bahasa</div>
+                            <div class="val">Indonesia (Professional) · Inggris (Intermediate)</div>
+                        </div>
+                        <div class="about-info-item">
+                            <div class="key">TOEFL</div>
+                            <div class="val">Skor 377 – LBU</div>
+                        </div>
+                    </div>
+
+                    <!-- Download CV Button -->
+                    <div class="reveal" style="margin-top:1.75rem;">
+                        <a href="CV.pdf" download="CV_Raihan_Fadila.pdf" class="btn-cv-download">
+                            <span class="btn-cv-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                    <polyline points="7 10 12 15 17 10" />
+                                    <line x1="12" y1="15" x2="12" y2="3" />
+                                </svg>
+                            </span>
+                            <span class="btn-cv-text">Download CV</span>
+                            <span class="btn-cv-sub">PDF · Curriculum Vitae</span>
+                        </a>
+                    </div>
+
+                    <!-- Education + Plakat — satu kotak -->
+                    <div class="edu-strip reveal" style="margin-top:2rem; flex-direction:column; align-items:stretch; gap:1.25rem;">
+
+                        <!-- Baris atas: ikon + info + IPK -->
+                        <div style="display:flex; align-items:center; gap:1.5rem; flex-wrap:wrap;">
+                            <div class="edu-icon">🎓</div>
+                            <div class="edu-info" style="flex:1;">
+                                <div class="edu-univ">Universitas Pamulang (UNPAM)</div>
+                                <div class="edu-degree">S1 Teknik Informatika · 2022–2025</div>
+                            </div>
+                            <div class="edu-gpa">
+                                <div class="num">3.75 / 4.00</div>
+                                <div class="lbl">IPK</div>
+                            </div>
+                        </div>
+
+                        <!-- Divider -->
+                        <div style="width:100%; height:1px; background:var(--border);"></div>
+
+                        <!-- Baris bawah: foto plakat + info + tombol -->
+                        <div style="display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+                            <div class="plakat-thumb-wrap">
+                                                                    <img src="assets/plakat/plakat.png" alt="Plakat Wisudawan Terbaik" class="plakat-thumb-img">
+                                                            </div>
+                            <div class="plakat-row-info" style="flex:1;">
+                                <div class="plakat-row-label">Penghargaan</div>
+                                <div class="plakat-row-title">Wisudawan Terbaik Periode ke-120</div>
+                                <div class="plakat-row-sub">Prodi Teknik Informatika · UNPAM</div>
+                            </div>
+                            <button type="button" class="plakat-view-btn" id="btnLihatPlakat">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                                    <circle cx="12" cy="12" r="3" />
+                                </svg>
+                                Lihat Foto
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     PLAKAT LIGHTBOX — simple & reliable
+==================================================== -->
+    <div id="plakatLightbox" class="plakat-lightbox">
+        <div class="plakat-lightbox-inner">
+            <button type="button" class="plakat-close" id="btnTutupPlakat">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+            <img src="assets/plakat/plakat.png" alt="Plakat Wisudawan Terbaik Periode ke-120">
+            <div class="plakat-caption">
+                <div class="plakat-caption-title">🏆 Wisudawan Terbaik Periode ke-120</div>
+                <div class="plakat-caption-sub">Program Studi Teknik Informatika S1 — Universitas Pamulang</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================
+     MARQUEE
+==================================================== -->
+    <div class="marquee-section">
+        <div class="marquee-track" id="marqueeTrack">
+                            <div class="marquee-item">
+                    <span>IT Support</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Web Developer</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>QA Tester</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>PHP Native</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>MySQL</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Python</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Network Config</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Helpdesk</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Data Analysis</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>ARIMA</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>UML Design</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Troubleshooting</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Mikrotik</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>JavaScript</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Linux</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>IT Support</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Web Developer</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>QA Tester</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>PHP Native</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>MySQL</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Python</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Network Config</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Helpdesk</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Data Analysis</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>ARIMA</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>UML Design</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Troubleshooting</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Mikrotik</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>JavaScript</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                            <div class="marquee-item">
+                    <span>Linux</span>
+                    <span class="marquee-dot"></span>
+                </div>
+                    </div>
+    </div>
+
+    <!-- ====================================================
+     SERVICES
+==================================================== -->
+    <section id="services" style="background: var(--bg2);">
+        <div class="section">
+            <div class="section-label reveal">Layanan</div>
+            <h2 class="section-title reveal">Apa yang Bisa<br><em>Saya Bantu</em></h2>
+            <p class="section-sub reveal">Layanan profesional yang saya tawarkan berdasarkan keahlian dan pengalaman nyata di lapangan.</p>
+
+            <div class="services-grid">
+                                    <div class="service-card reveal" style="transition-delay:0s">
+                        <div class="service-num">01</div>
+                        <div class="service-icon">🖥️</div>
+                        <h3 class="service-title">IT Support &amp; Helpdesk</h3>
+                        <p class="service-desc">Instalasi OS, konfigurasi jaringan, troubleshooting hardware/software, dan dukungan teknis profesional.</p>
+                    </div>
+                                    <div class="service-card reveal" style="transition-delay:0.1s">
+                        <div class="service-num">02</div>
+                        <div class="service-icon">🌐</div>
+                        <h3 class="service-title">Web Development</h3>
+                        <p class="service-desc">Membangun aplikasi web dengan PHP Native, HTML, CSS, JavaScript, dan MySQL. Dari desain hingga deployment.</p>
+                    </div>
+                                    <div class="service-card reveal" style="transition-delay:0.2s">
+                        <div class="service-num">03</div>
+                        <div class="service-icon">🔍</div>
+                        <h3 class="service-title">QA Tester Manual</h3>
+                        <p class="service-desc">Pengujian fungsional, pembuatan test case, dan dokumentasi hasil pengujian yang terstruktur.</p>
+                    </div>
+                                    <div class="service-card reveal" style="transition-delay:0.3s">
+                        <div class="service-num">04</div>
+                        <div class="service-icon">📊</div>
+                        <h3 class="service-title">Analisis Data &amp; Forecasting</h3>
+                        <p class="service-desc">Analisis data dan prediksi tren menggunakan Python dan metode ARIMA/Time Series.</p>
+                    </div>
+                                    <div class="service-card reveal" style="transition-delay:0.4s">
+                        <div class="service-num">05</div>
+                        <div class="service-icon">🗄️</div>
+                        <h3 class="service-title">Database &amp; System Design</h3>
+                        <p class="service-desc">Perancangan sistem informasi dengan UML, ERD, LRS menggunakan Microsoft Visio &amp; Visual Paradigm.</p>
+                    </div>
+                                    <div class="service-card reveal" style="transition-delay:0.5s">
+                        <div class="service-num">06</div>
+                        <div class="service-icon">🔒</div>
+                        <h3 class="service-title">Network &amp; Security</h3>
+                        <p class="service-desc">Monitoring LAN/WAN/Wi-Fi, konfigurasi Mikrotik, backup data, serta penerapan patch &amp; antivirus.</p>
+                    </div>
+                            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     LAST PROJECTS
+==================================================== -->
+    <section id="projects" style="background: var(--bg3);">
+        <div class="section">
+            <div class="section-label reveal">Portfolio</div>
+            <h2 class="section-title reveal">Last<br><em>Projects</em></h2>
+            <p class="section-sub reveal">Empat proyek aplikasi web yang telah dibangun — dari sistem manajemen koperasi sekolah, aset IT rumah sakit, informasi masjid, hingga helpdesk ticketing. Klik kartu untuk melihat detail proyek.</p>
+
+            <div class="proj-grid">
+                                    <div class="proj-card reveal"
+                        style="--proj-color:#1D9E75; transition-delay:0s"
+                        onclick="openModal(0)"
+                        role="button" tabindex="0"
+                        onkeydown="if(event.key==='Enter')openModal(0)">
+
+                        <!-- Thumbnail foto -->
+                        <div class="proj-thumb">
+                                                            <img src="assets/projects/p1.png" alt="Aplikasi Koperasi Kantin SMPN 1 Sepatan" loading="lazy">
+                                                        <!-- Hover overlay -->
+                            <div class="proj-thumb-overlay">
+                                <div class="proj-thumb-zoom">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                    </svg>
+                                    Lihat Detail
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Featured label -->
+                        
+                        <div class="proj-body">
+                            <div class="proj-num">01</div>
+                            <div class="proj-tag">Web App · Manajemen Koperasi</div>
+                            <h3 class="proj-title">Aplikasi Koperasi Kantin SMPN 1 Sepatan</h3>
+                            <p class="proj-desc">Aplikasi berbasis web untuk mengelola operasional koperasi kantin sekolah secara digital. Sistem mencakup manajemen transaksi jual-beli harian, pencatatan data anggota, serta laporan keuangan sederhana. Dibangun menggunakan PHP Native dan MySQL dengan tampilan antarmuka yang responsif dan mudah digunakan oleh pengelola koperasi.</p>
+                        </div>
+
+                        <div class="proj-footer">
+                            <div class="proj-meta-left">
+                                <div class="proj-role-label">Peran</div>
+                                <div class="proj-role-val">Full Stack Developer</div>
+                                <div class="proj-year">2023–2024</div>
+                            </div>
+                            <div class="proj-stack">
+                                                                    <span class="proj-pill">PHP Native</span>
+                                                                    <span class="proj-pill">MySQL</span>
+                                                                    <span class="proj-pill">HTML</span>
+                                                                    <span class="proj-pill">CSS</span>
+                                                                    <span class="proj-pill">JavaScript</span>
+                                                            </div>
+                        </div>
+
+                    </div>
+                                    <div class="proj-card reveal"
+                        style="--proj-color:#378ADD; transition-delay:0.13s"
+                        onclick="openModal(1)"
+                        role="button" tabindex="0"
+                        onkeydown="if(event.key==='Enter')openModal(1)">
+
+                        <!-- Thumbnail foto -->
+                        <div class="proj-thumb">
+                                                            <img src="assets/projects/p2.png" alt="Aplikasi IT Asset Management RS Sehat Sejahtera" loading="lazy">
+                                                        <!-- Hover overlay -->
+                            <div class="proj-thumb-overlay">
+                                <div class="proj-thumb-zoom">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                    </svg>
+                                    Lihat Detail
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Featured label -->
+                        
+                        <div class="proj-body">
+                            <div class="proj-num">02</div>
+                            <div class="proj-tag">Web App · IT Asset Management</div>
+                            <h3 class="proj-title">Aplikasi IT Asset Management RS Sehat Sejahtera</h3>
+                            <p class="proj-desc">Sistem informasi untuk pencatatan, pelacakan, dan pengelolaan aset perangkat IT di lingkungan rumah sakit secara terpusat. Fitur meliputi inventaris perangkat, riwayat pemeliharaan, status kondisi aset, serta laporan aset aktif dan tidak aktif. Dirancang untuk mempermudah tim IT dalam memantau seluruh aset tanpa perlu pencatatan manual.</p>
+                        </div>
+
+                        <div class="proj-footer">
+                            <div class="proj-meta-left">
+                                <div class="proj-role-label">Peran</div>
+                                <div class="proj-role-val">Full Stack Developer</div>
+                                <div class="proj-year">2024</div>
+                            </div>
+                            <div class="proj-stack">
+                                                                    <span class="proj-pill">PHP Native</span>
+                                                                    <span class="proj-pill">MySQL</span>
+                                                                    <span class="proj-pill">Bootstrap</span>
+                                                                    <span class="proj-pill">JavaScript</span>
+                                                            </div>
+                        </div>
+
+                    </div>
+                                    <div class="proj-card reveal"
+                        style="--proj-color:#BA7517; transition-delay:0.26s"
+                        onclick="openModal(2)"
+                        role="button" tabindex="0"
+                        onkeydown="if(event.key==='Enter')openModal(2)">
+
+                        <!-- Thumbnail foto -->
+                        <div class="proj-thumb">
+                                                            <img src="assets/projects/p3.png" alt="Aplikasi Sistem Informasi Masjid Al-Ikhlas" loading="lazy">
+                                                        <!-- Hover overlay -->
+                            <div class="proj-thumb-overlay">
+                                <div class="proj-thumb-zoom">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                    </svg>
+                                    Lihat Detail
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Featured label -->
+                        
+                        <div class="proj-body">
+                            <div class="proj-num">03</div>
+                            <div class="proj-tag">Web App · Sistem Informasi</div>
+                            <h3 class="proj-title">Aplikasi Sistem Informasi Masjid Al-Ikhlas</h3>
+                            <p class="proj-desc">Platform digital untuk mendukung pengelolaan operasional masjid secara terintegrasi. Mencakup manajemen jadwal shalat dan kegiatan, pencatatan kas masuk dan keluar, serta data anggota dan pengurus. Aplikasi ini mempermudah transparansi keuangan dan penjadwalan kegiatan masjid bagi pengurus dan jamaah.</p>
+                        </div>
+
+                        <div class="proj-footer">
+                            <div class="proj-meta-left">
+                                <div class="proj-role-label">Peran</div>
+                                <div class="proj-role-val">Full Stack Developer</div>
+                                <div class="proj-year">2024</div>
+                            </div>
+                            <div class="proj-stack">
+                                                                    <span class="proj-pill">PHP Native</span>
+                                                                    <span class="proj-pill">MySQL</span>
+                                                                    <span class="proj-pill">JavaScript</span>
+                                                                    <span class="proj-pill">CSS</span>
+                                                            </div>
+                        </div>
+
+                    </div>
+                                    <div class="proj-card reveal"
+                        style="--proj-color:#7F77DD; transition-delay:0.39s"
+                        onclick="openModal(3)"
+                        role="button" tabindex="0"
+                        onkeydown="if(event.key==='Enter')openModal(3)">
+
+                        <!-- Thumbnail foto -->
+                        <div class="proj-thumb">
+                                                            <img src="assets/projects/p4.png" alt="Aplikasi Helpdesk IT RS An-Nisa Tangerang" loading="lazy">
+                                                        <!-- Hover overlay -->
+                            <div class="proj-thumb-overlay">
+                                <div class="proj-thumb-zoom">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="11" cy="11" r="8" />
+                                        <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                    </svg>
+                                    Lihat Detail
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Featured label -->
+                                                    <div class="proj-featured">Terbaru</div>
+                        
+                        <div class="proj-body">
+                            <div class="proj-num">04</div>
+                            <div class="proj-tag">Web App · Helpdesk &amp; Ticketing</div>
+                            <h3 class="proj-title">Aplikasi Helpdesk IT RS An-Nisa Tangerang</h3>
+                            <p class="proj-desc">Sistem manajemen tiket gangguan IT yang dikembangkan untuk mendukung efisiensi penanganan masalah teknis di lingkungan RS An-Nisa Tangerang. Pengguna dapat membuat tiket laporan kerusakan, memantau status penanganan secara real-time, serta teknisi dapat merespons dan menutup tiket secara terstruktur. Meningkatkan kecepatan dan akuntabilitas tim IT support rumah sakit.</p>
+                        </div>
+
+                        <div class="proj-footer">
+                            <div class="proj-meta-left">
+                                <div class="proj-role-label">Peran</div>
+                                <div class="proj-role-val">Contributor · IT Intern</div>
+                                <div class="proj-year">2025–2026</div>
+                            </div>
+                            <div class="proj-stack">
+                                                                    <span class="proj-pill">PHP Native</span>
+                                                                    <span class="proj-pill">MySQL</span>
+                                                                    <span class="proj-pill">JavaScript</span>
+                                                                    <span class="proj-pill">CSS</span>
+                                                                    <span class="proj-pill">Bootstrap</span>
+                                                            </div>
+                        </div>
+
+                    </div>
+                            </div>
+
+            <!-- Summary strip -->
+            <div class="reveal" style="margin-top:3rem;padding:1.75rem 2.5rem;background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius);backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+                <div style="display:flex;gap:3rem;flex-wrap:wrap;">
+                    <div>
+                        <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--accent);line-height:1;">4</div>
+                        <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-top:0.3rem;">Proyek Selesai</div>
+                    </div>
+                    <div>
+                        <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--accent);line-height:1;">4+</div>
+                        <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-top:0.3rem;">Teknologi Digunakan</div>
+                    </div>
+                    <div>
+                        <div style="font-family:var(--font-display);font-size:2.2rem;font-weight:300;color:var(--accent);line-height:1;">2</div>
+                        <div style="font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text3);margin-top:0.3rem;">Institusi Berbeda</div>
+                    </div>
+                </div>
+                <a href="#contact" class="btn btn-outline" style="flex-shrink:0;">Diskusikan Proyek Anda →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     PROJECT MODAL POPUP
+==================================================== -->
+    <div id="projModal" class="modal-overlay" onclick="closeModalOutside(event)" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-box">
+
+            <!-- Close button -->
+            <button class="modal-close" onclick="closeModal()" aria-label="Tutup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+
+            <!-- Nav prev/next -->
+            <button class="modal-nav modal-prev" onclick="modalNav(-1)" aria-label="Proyek sebelumnya">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6" />
+                </svg>
+            </button>
+            <button class="modal-nav modal-next" onclick="modalNav(1)" aria-label="Proyek berikutnya">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6" />
+                </svg>
+            </button>
+
+            <!-- Foto proyek -->
+            <div class="modal-img-wrap" id="modalImgWrap">
+                <img id="modalImg" src="" alt="" loading="lazy">
+                <div class="modal-img-placeholder" id="modalImgPlaceholder">
+                    <span id="modalImgNum"></span>
+                </div>
+                <!-- Color bar top -->
+                <div class="modal-img-bar" id="modalImgBar"></div>
+            </div>
+
+            <!-- Konten -->
+            <div class="modal-content">
+                <div class="modal-meta">
+                    <span class="modal-tag" id="modalTag"></span>
+                    <span class="modal-counter" id="modalCounter"></span>
+                </div>
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <p class="modal-desc" id="modalDesc"></p>
+
+                <div class="modal-divider"></div>
+
+                <div class="modal-bottom">
+                    <div class="modal-info-row">
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Peran</div>
+                            <div class="modal-info-val" id="modalRole"></div>
+                        </div>
+                        <div class="modal-info-item">
+                            <div class="modal-info-label">Tahun</div>
+                            <div class="modal-info-val" id="modalYear"></div>
+                        </div>
+                    </div>
+                    <div class="modal-stack-wrap">
+                        <div class="modal-info-label" style="margin-bottom:0.6rem;">Tech Stack</div>
+                        <div class="modal-stack" id="modalStack"></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ====================================================
+     EXPERIENCE
+==================================================== -->
+    <section id="experience" style="background: var(--bg);">
+        <div class="section">
+            <div class="section-label reveal">Track Record</div>
+            <h2 class="section-title reveal">Pengalaman<br><em>Kerja</em></h2>
+            <p class="section-sub reveal">Perjalanan karir saya dari berbagai peran di bidang IT, pengembangan web, dan operasional bisnis.</p>
+
+            <div class="timeline">
+                                    <div class="timeline-item reveal" style="transition-delay:0s">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-period">November 2025 – Mei 2026</div>
+                        <h3 class="timeline-title">Intern IT Support</h3>
+                        <div class="timeline-company">RS An-Nisa Tangerang · Magang Hub – Kemnaker RI</div>
+                        <ul class="timeline-bullets">
+                                                            <li>Melakukan instalasi, konfigurasi, dan perawatan perangkat keras meliputi PC, Raspberry Pi, laptop, printer, dan scanner untuk memastikan seluruh perangkat operasional berjalan tanpa hambatan. </li>
+                                                            <li>Menangani troubleshooting hardware dan software serta memastikan perangkat jaringan seperti router, switch, dan access point berfungsi dengan baik di lingkungan rumah sakit. </li>
+                                                            <li>Melakukan monitoring jaringan lokal LAN, WAN, dan Wi-Fi serta Mikrotik, termasuk penanganan backup data dan pemulihan data (data recovery) untuk menjaga keberlangsungan operasional. </li>
+                                                            <li>Memastikan keamanan sistem IT dengan melakukan update patch dan antivirus secara berkala guna melindungi sistem dari ancaman virus, malware, dan akses ilegal. </li>
+                                                            <li>Berkontribusi dalam pengembangan Aplikasi Helpdesk IT RS An-Nisa Tangerang sebagai sistem manajemen tiket gangguan IT untuk mendukung efisiensi penanganan masalah teknis di lingkungan rumah sakit.</li>
+                                                    </ul>
+                    </div>
+                                    <div class="timeline-item reveal" style="transition-delay:0.12s">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-period">Maret 2024 – November 2025</div>
+                        <h3 class="timeline-title">Asisten Laboratorium</h3>
+                        <div class="timeline-company">Universitas Pamulang</div>
+                        <ul class="timeline-bullets">
+                                                            <li>Melaksanakan pemeriksaan kelayakan perangkat laboratorium (PC, laptop, jaringan, dan perangkat pendukung) sebelum digunakan dalam kegiatan praktikum untuk memastikan operasional tanpa hambatan.</li>
+                                                            <li>Mencatat, melaporkan, dan memastikan perangkat yang rusak atau tidak berfungsi dapat segera diperbaiki atau diganti untuk meminimalkan downtime operasional. </li>
+                                                            <li>Menjaga standar kualitas dan keamanan laboratorium sesuai prosedur.</li>
+                                                            <li>Berperan dalam mendukung kelancaran operasional laboratorium dengan memastikan seluruh fasilitas dalam kondisi siap pakai. </li>
+                                                    </ul>
+                    </div>
+                                    <div class="timeline-item reveal" style="transition-delay:0.24s">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-period">September 2023 – Januari 2024</div>
+                        <h3 class="timeline-title">Magang Developer Aplikasi Koperasi Kantin</h3>
+                        <div class="timeline-company">SMPN 1 Sepatan Kab. Tangerang</div>
+                        <ul class="timeline-bullets">
+                                                            <li>Merancang dan mengembangkan aplikasi koperasi kantin berbasis web menggunakan HTML, CSS, PHP, dan MySQL. </li>
+                                                            <li>Mendesain struktur database dan mengimplementasikan fitur manajemen data (CRUD) untuk transaksi dan anggota. </li>
+                                                            <li>Melakukan pengujian dan debugging aplikasi guna memastikan seluruh fungsionalitas berjalan dengan baik dan stabil. 
+</li>
+                                                    </ul>
+                    </div>
+                                    <div class="timeline-item reveal" style="transition-delay:0.36s">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-period">Juli 2019 – Desember 2019</div>
+                        <h3 class="timeline-title">Sales Canvassing</h3>
+                        <div class="timeline-company">PT Sumber Cipta Multiniaga</div>
+                        <ul class="timeline-bullets">
+                                                            <li>Mengembangkan dan melaksanakan strategi penjualan produk rokok secara langsung kepada toko-toko dan konsumen melalui pendekatan canvassing yang profesional. </li>
+                                                            <li>Mengenalkan produk baru serta meningkatkan brand awareness melalui komunikasi persuasif dan edukasi teknis kepada pelanggan. </li>
+                                                            <li>Berhasil mencapai target penjualan produk baru dengan peningkatan hingga 15% melalui penerapan strategi canvassing yang terstruktur, persuasif, dan berorientasi pada hasil, serta membangun hubungan baik dengan pelanggan untuk menjaga loyalitas jangka panjang. </li>
+                                                    </ul>
+                    </div>
+                            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     CERTIFICATIONS
+==================================================== -->
+    <section id="certifications" style="background: var(--bg2);">
+        <div class="section">
+            <div class="section-label reveal">Lisensi</div>
+            <h2 class="section-title reveal">Sertifikasi &<br><em>Pencapaian</em></h2>
+            <p class="section-sub reveal">Sertifikasi yang telah diperoleh untuk membuktikan kompetensi di berbagai bidang teknologi dan profesional. Klik kartu bergambar untuk melihat sertifikat lebih besar.</p>
+
+            <div class="cert-grid">
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0s"
+                        onclick="openCertModal(0)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(0)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/c1.jpg" alt="IT Support RS An-Nisa Tangerang" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">IT Support</div>
+                            <h3 class="cert-title">IT Support RS An-Nisa Tangerang</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">Magang Hub Kementerian Ketenagakerjaan RI</span>
+                                <span class="cert-year">2026</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.07s"
+                        onclick="openCertModal(1)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(1)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C3.jpeg" alt="Bootcamp Data Analyst Pakai Excel, SQL, &amp; Persiapan Kerja" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Certificate of Appreciation</div>
+                            <h3 class="cert-title">Bootcamp Data Analyst Pakai Excel, SQL, &amp; Persiapan Kerja</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">Karirnex by PT Ebiz Karisma Internasional</span>
+                                <span class="cert-year">2025</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.14s"
+                        onclick="openCertModal(2)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(2)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C1.jpeg" alt="Computer Network Course Level Advanced" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Certificate of Completion</div>
+                            <h3 class="cert-title">Computer Network Course Level Advanced</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">ITBOX</span>
+                                <span class="cert-year">2026</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.21s"
+                        onclick="openCertModal(3)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(3)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C2.jpeg" alt="CN-01 Dasar OSI Layer &amp; IP Address" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Certificate of Completion</div>
+                            <h3 class="cert-title">CN-01 Dasar OSI Layer &amp; IP Address</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">ITBOX</span>
+                                <span class="cert-year">2026</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.28s"
+                        onclick="openCertModal(4)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(4)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C4.png" alt="VSGA Junior Web Developer" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Web Development</div>
+                            <h3 class="cert-title">VSGA Junior Web Developer</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">KOMINFO – Digital Talent Scholarship</span>
+                                <span class="cert-year">2022</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.35s"
+                        onclick="openCertModal(5)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(5)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C5.jpg" alt="Introduction to JavaScript" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Web Development</div>
+                            <h3 class="cert-title">Introduction to JavaScript</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">Sololearn</span>
+                                <span class="cert-year">2023</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.42s"
+                        onclick="openCertModal(6)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(6)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C6.jpg" alt="TOEFL Prediction Test" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Bahasa</div>
+                            <h3 class="cert-title">TOEFL Prediction Test</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">LBU UNIVERSITAS PAMULANG</span>
+                                <span class="cert-year">2024</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.49s"
+                        onclick="openCertModal(7)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(7)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C7.jpg" alt="Sertifikat Kompetensi Pemrogram" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Pemrograman</div>
+                            <h3 class="cert-title">Sertifikat Kompetensi Pemrogram</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">LSP UNIVERSITAS PAMULANG</span>
+                                <span class="cert-year">2025</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.56s"
+                        onclick="openCertModal(8)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(8)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C9.jpeg" alt="Microsoft Office 2010" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Office Tools</div>
+                            <h3 class="cert-title">Microsoft Office 2010</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">Mandiri Integrated Computer Course (MICC)</span>
+                                <span class="cert-year">2019</span>
+                            </div>
+                        </div>
+                    </div>
+                                    <div class="cert-card reveal has-img"
+                        style="transition-delay:0.63s"
+                        onclick="openCertModal(9)" role="button" tabindex="0" onkeydown="if(event.key==='Enter')openCertModal(9)" >
+
+                                                    <div class="cert-img-wrap">
+                                <img src="assets/certificates/C8.jpeg" alt="Teknik Komputer dan Jaringan" loading="lazy">
+                                <div class="cert-img-overlay">
+                                    <div class="cert-img-zoom">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="11" cy="11" r="8" />
+                                            <path d="m21 21-4.35-4.35M11 8v6M8 11h6" />
+                                        </svg>
+                                        Lihat Sertifikat
+                                    </div>
+                                </div>
+                            </div>
+                        
+                        <div class="cert-body">
+                            <div class="cert-category">Networking</div>
+                            <h3 class="cert-title">Teknik Komputer dan Jaringan</h3>
+                            <div class="cert-meta">
+                                <span class="cert-issuer">PT Indonesia Nippon Seiki</span>
+                                <span class="cert-year">2019</span>
+                            </div>
+                        </div>
+                    </div>
+                            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     CERTIFICATE MODAL POPUP
+==================================================== -->
+    <div id="certModal" class="modal-overlay" onclick="closeCertModalOutside(event)" role="dialog" aria-modal="true">
+        <div class="modal-box" style="max-width:560px;">
+            <button class="modal-close" onclick="closeCertModal()" aria-label="Tutup">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M18 6L6 18M6 6l12 12" />
+                </svg>
+            </button>
+            <div class="modal-img-wrap" style="height:auto; max-height:70vh;">
+                <img id="certModalImg" src="" alt="" style="width:100%; height:auto; object-fit:contain; max-height:70vh;">
+            </div>
+            <div class="modal-content" style="padding:1.5rem 2rem 2rem;">
+                <div class="modal-meta">
+                    <span class="modal-tag" id="certModalCategory"></span>
+                    <span class="modal-counter" id="certModalYear"></span>
+                </div>
+                <h2 class="modal-title" id="certModalTitle" style="font-size:1.3rem;"></h2>
+                <p class="modal-desc" id="certModalIssuer" style="margin-top:0.25rem;"></p>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- ====================================================
+     MY FAVOURITE TOOLS
+==================================================== -->
+    <section id="tools" style="background: var(--bg);">
+        <div class="section">
+            <div class="section-label reveal">Tech Stack</div>
+            <h2 class="section-title reveal">My Favorit<br><em>Tools</em></h2>
+            <p class="section-sub reveal">Koleksi tools dan teknologi yang saya gunakan sehari-hari — dari pengembangan web, analisis data, desain sistem, hingga administrasi jaringan.</p>
+
+            <div class="tools-grid">
+
+                <!-- Microsoft 365 -->
+                <div class="tool-card reveal" style="--tool-color:#D83B01; --tool-glow:rgba(216,59,1,0.15); transition-delay:0.00s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t1.png" alt="Microsoft 365">
+                    </div>
+                    <div class="tool-name">Microsoft 365</div>
+                    <div class="tool-category">Productivity</div>
+                </div>
+
+                <!-- Canva -->
+                <div class="tool-card reveal" style="--tool-color:#00C4CC; --tool-glow:rgba(0,196,204,0.15); transition-delay:0.06s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t2.png" alt="Canva">
+                    </div>
+                    <div class="tool-name">Canva</div>
+                    <div class="tool-category">Design</div>
+                </div>
+
+                <!-- Notion -->
+                <div class="tool-card reveal" style="--tool-color:#ffffff; --tool-glow:rgba(255,255,255,0.1); transition-delay:0.12s">
+                    <div class="tool-icon-wrap">
+                        <svg viewBox="0 0 24 24" xmlns="https://brandfetch.com/canva.com?view=library&library=default&collection=logos&asset=idBF_wSOE0&utm_source=https%253A%252F%252Fbrandfetch.com%252Fcanva.com&utm_medium=copyAction&utm_campaign=brandPageReferral">
+                            <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.139c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z" fill="#ffffff" />
+                        </svg>
+                    </div>
+                    <div class="tool-name">Notion</div>
+                    <div class="tool-category">Productivity</div>
+                </div>
+
+                <!-- HTML5 -->
+                <div class="tool-card reveal" style="--tool-color:#E34F26; --tool-glow:rgba(227,79,38,0.15); transition-delay:0.18s">
+                    <div class="tool-icon-wrap">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm7.031 9.75l-.232-2.718 10.059.003.23-2.622L5.412 4.41l.698 8.01h9.126l-.326 3.426-2.91.804-2.955-.81-.188-2.11H6.248l.33 4.171L12 19.351l5.379-1.443.744-8.157H8.531z" fill="#E34F26" />
+                        </svg>
+                    </div>
+                    <div class="tool-name">HTML5</div>
+                    <div class="tool-category">Frontend</div>
+                </div>
+
+                <!-- CSS3 -->
+                <div class="tool-card reveal" style="--tool-color:#1572B6; --tool-glow:rgba(21,114,182,0.15); transition-delay:0.24s">
+                    <div class="tool-icon-wrap">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1.5 0h21l-1.91 21.563L11.977 24l-8.565-2.438L1.5 0zm17.09 4.413L5.41 4.41l.213 2.622 10.125.002-.255 2.716h-6.64l.24 2.573h6.182l-.366 3.523-2.91.804-2.956-.81-.188-2.11h-2.61l.29 3.855L12 19.288l5.373-1.53L18.59 4.414z" fill="#1572B6" />
+                        </svg>
+                    </div>
+                    <div class="tool-name">CSS3</div>
+                    <div class="tool-category">Frontend</div>
+                </div>
+
+                <!-- JavaScript -->
+                <div class="tool-card reveal" style="--tool-color:#F7DF1E; --tool-glow:rgba(247,223,30,0.15); transition-delay:0.30s">
+                    <div class="tool-icon-wrap">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M0 0h24v24H0V0zm22.034 18.276c-.175-1.095-.888-2.015-3.003-2.873-.736-.345-1.554-.585-1.797-1.14-.091-.33-.105-.51-.046-.705.15-.646.915-.84 1.515-.66.39.12.75.42.976.9 1.034-.676 1.034-.676 1.755-1.125-.27-.42-.404-.601-.586-.78-.63-.705-1.469-1.065-2.834-1.034l-.705.089c-.676.165-1.32.525-1.71 1.005-1.14 1.291-.811 3.541.569 4.471 1.365 1.02 3.361 1.244 3.616 2.205.24 1.17-.87 1.545-1.966 1.41-.811-.18-1.26-.586-1.755-1.336l-1.83 1.051c.21.48.45.689.81 1.109 1.74 1.756 6.09 1.666 6.871-1.004.029-.09.24-.705.074-1.65l.046.067zm-8.983-7.245h-2.248c0 1.938-.009 3.864-.009 5.805 0 1.232.063 2.363-.138 2.704-.33.689-1.18.601-1.566.48-.396-.196-.597-.466-.83-.855-.063-.105-.11-.196-.127-.196l-1.825 1.125c.305.63.75 1.172 1.324 1.517.855.51 2.004.675 3.207.405.783-.226 1.458-.691 1.811-1.411.51-.93.402-2.07.397-3.346.012-2.054 0-4.109 0-6.179l.004-.056z" fill="#F7DF1E" />
+                        </svg>
+                    </div>
+                    <div class="tool-name">JavaScript</div>
+                    <div class="tool-category">Frontend</div>
+                </div>
+
+                <!-- PHP -->
+                <div class="tool-card reveal" style="--tool-color:#777BB4; --tool-glow:rgba(119,123,180,0.15); transition-delay:0.36s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t3.png" alt="PHP Native">
+                    </div>
+                    <div class="tool-name">PHP Native</div>
+                    <div class="tool-category">Backend</div>
+                </div>
+
+                <!-- Python -->
+                <div class="tool-card reveal" style="--tool-color:#3776AB; --tool-glow:rgba(55,118,171,0.15); transition-delay:0.42s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t4.png" alt="Python">
+                    </div>
+                    <div class="tool-name">Python</div>
+                    <div class="tool-category">Data & Scripting</div>
+                </div>
+
+                <!-- MySQL / SQL -->
+                <div class="tool-card reveal" style="--tool-color:#4479A1; --tool-glow:rgba(68,121,161,0.15); transition-delay:0.48s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t5.png" alt="MySQL">
+                    </div>
+                    <div class="tool-name">MySQL</div>
+                    <div class="tool-category">Database</div>
+                </div>
+
+                <!-- Microsoft Visio -->
+                <div class="tool-card reveal" style="--tool-color:#3955A3; --tool-glow:rgba(57,85,163,0.15); transition-delay:0.54s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t8.png" alt="Microsoft Visio">
+                    </div>
+                    <div class="tool-name">Microsoft Visio</div>
+                    <div class="tool-category">System Design</div>
+                </div>
+
+                <!-- Visual Paradigm -->
+                <div class="tool-card reveal" style="--tool-color:#E8732A; --tool-glow:rgba(232,115,42,0.15); transition-delay:0.60s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t6.png" alt="Visual Paradigm">
+                    </div>
+                    <div class="tool-name">Visual Paradigm</div>
+                    <div class="tool-category">UML / ERD</div>
+                </div>
+
+                <!-- Mikrotik -->
+                <div class="tool-card reveal" style="--tool-color:#3955A3; --tool-glow:rgba(9, 36, 189, 0.5); transition-delay:0.66s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t77.png" alt="Mikrotik">
+                    </div>
+                    <div class="tool-name">Mikrotik</div>
+                    <div class="tool-category">Networking</div>
+                </div>
+
+                <!-- Cisco  -->
+                <div class="tool-card reveal" style="--tool-color:#3955A3; --tool-glow:rgba(13, 93, 240, 0.99); transition-delay:0.66s">
+                    <div class="tool-icon-wrap">
+                        <img src="assets/tools/t88.png" alt="Cisco">
+                    </div>
+                    <div class="tool-name">Cisco Packet Tracer</div>
+                    <div class="tool-category">Networking</div>
+                </div>
+
+            </div><!-- end tools-grid -->
+        </div>
+    </section>
+
+    <!-- ====================================================
+     CONTACT
+==================================================== -->
+    <section id="contact" style="background: var(--bg);">
+        <div class="section">
+            <div class="section-label reveal">Hubungi Saya</div>
+            <h2 class="section-title reveal">Mari <em>Berkolaborasi</em><br>Bersama</h2>
+            <p class="section-sub reveal">Terbuka untuk peluang kerja, kolaborasi proyek, atau sekadar berdiskusi seputar teknologi dan pengembangan.</p>
+
+            <div class="contact-grid">
+                <!-- Contact Info -->
+                <div class="contact-info reveal-left">
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">📧</div>
+                        <div>
+                            <div class="contact-info-label">Email</div>
+                            <div class="contact-info-val">
+                                <a href="mailto:raihanfadila8@gmail.com">raihanfadila8@gmail.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">📞</div>
+                        <div>
+                            <div class="contact-info-label">WhatsApp / Telepon</div>
+                            <div class="contact-info-val">+62 895322764937</div>
+                        </div>
+                    </div>
+                    <div class="contact-info-item">
+                        <div class="contact-info-icon">📍</div>
+                        <div>
+                            <div class="contact-info-label">Lokasi</div>
+                            <div class="contact-info-val">Tangerang, Banten, Indonesia</div>
+                        </div>
+                    </div>
+
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/raihan-fadila" target="_blank" class="social-btn">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                            LinkedIn
+                        </a>
+                        <a href="https://wa.me/62895322764937" target="_blank" class="social-btn whatsapp">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                            </svg>
+                            WhatsApp
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Contact Form -->
+                <div class="contact-form reveal-right">
+                    <form id="contactForm" onsubmit="handleSubmit(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="fname">Nama Depan</label>
+                                <input type="text" id="fname" class="form-input" placeholder="John" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lname">Nama Belakang</label>
+                                <input type="text" id="lname" class="form-input" placeholder="Doe">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email</label>
+                            <input type="email" id="email" class="form-input" placeholder="email@perusahaan.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="subject">Subjek</label>
+                            <input type="text" id="subject" class="form-input" placeholder="Peluang Kerja / Kolaborasi Proyek">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="message">Pesan</label>
+                            <textarea id="message" class="form-textarea" placeholder="Ceritakan kebutuhan atau peluang yang ingin Anda diskusikan..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+                            Kirim Pesan →
+                        </button>
+                        <p class="form-notice">* Form ini akan membuka klien email Anda. Atau hubungi langsung via WhatsApp di atas.</p>
+                        <div class="form-success" id="formSuccess">✓ Terima kasih! Pesan Anda telah dikirim.</div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====================================================
+     FOOTER
+==================================================== -->
+    <footer>
+        <div class="footer-logo">
+            <strong>Raihan Fadila</strong> — IT Professional
+        </div>
+        <div class="footer-copy">
+            © 2026 Raihan Fadila. All rights reserved.
+        </div>
+        <div class="footer-back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 15l-6-6-6 6" />
+            </svg>
+            Kembali ke Atas
+        </div>
+    </footer>
+
+    <!-- ====================================================
+     JAVASCRIPT
+==================================================== -->
+    <script>
+        /* ---- Preloader ---- */
+        (function() {
+            const name = "Raihan Fadila";
+            const el = document.getElementById('preloader-name');
+            name.split('').forEach((ch, i) => {
+                const s = document.createElement('span');
+                s.textContent = ch === ' ' ? '\u00A0' : ch;
+                s.style.animationDelay = (0.05 * i + 0.3) + 's';
+                el.appendChild(s);
+            });
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    document.getElementById('preloader').classList.add('hide');
+                }, 2200);
+            });
+        })();
+
+        /* ---- Custom Cursor ---- */
+        const cursor = document.getElementById('cursor');
+        const ring = document.getElementById('cursor-ring');
+        let mx = 0,
+            my = 0,
+            rx = 0,
+            ry = 0;
+        document.addEventListener('mousemove', e => {
+            mx = e.clientX;
+            my = e.clientY;
+            cursor.style.left = mx + 'px';
+            cursor.style.top = my + 'px';
+        });
+
+        function animateRing() {
+            rx += (mx - rx) * 0.12;
+            ry += (my - ry) * 0.12;
+            ring.style.left = rx + 'px';
+            ring.style.top = ry + 'px';
+            requestAnimationFrame(animateRing);
+        }
+        animateRing();
+
+        document.querySelectorAll('a, button, .service-card, .cert-card, .proj-card, .tool-card').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'translate(-50%,-50%) scale(2)';
+                ring.style.transform = 'translate(-50%,-50%) scale(1.5)';
+                ring.style.opacity = '0.8';
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+                ring.style.transform = 'translate(-50%,-50%) scale(1)';
+                ring.style.opacity = '0.5';
+            });
+        });
+
+        /* ---- Theme Toggle ---- */
+        const themeToggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        themeToggle.addEventListener('click', () => {
+            const curr = html.getAttribute('data-theme');
+            html.setAttribute('data-theme', curr === 'dark' ? 'light' : 'dark');
+            localStorage.setItem('theme', html.getAttribute('data-theme'));
+        });
+        // Remember preference
+        const saved = localStorage.getItem('theme');
+        if (saved) html.setAttribute('data-theme', saved);
+
+        /* ---- Navbar Scroll ---- */
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 40);
+        });
+
+        /* ---- Mobile Nav ---- */
+        function toggleMobileNav() {
+            document.getElementById('mobileNav').classList.toggle('open');
+        }
+
+        function closeMobileNav() {
+            document.getElementById('mobileNav').classList.remove('open');
+        }
+
+        /* ---- Scroll Reveal ---- */
+        const revealEls = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) {
+                    e.target.classList.add('visible');
+                    observer.unobserve(e.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -60px 0px'
+        });
+        revealEls.forEach(el => observer.observe(el));
+
+        /* ---- Contact Form ---- */
+        function handleSubmit(e) {
+            e.preventDefault();
+            const fname = document.getElementById('fname').value;
+            const lname = document.getElementById('lname').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value || 'Pesan dari Portfolio';
+            const message = document.getElementById('message').value;
+            const body = `Halo Raihan,%0A%0ANama: ${fname} ${lname}%0AEmail: ${email}%0A%0APesan:%0A${message}`;
+            window.location.href = `mailto:raihanfadila8@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`;
+            document.getElementById('formSuccess').style.display = 'block';
+            setTimeout(() => document.getElementById('formSuccess').style.display = 'none', 5000);
+        }
+
+        /* ---- Project Modal ---- */
+        const projectsData = [{"num":"01","tag":"Web App \u00b7 Manajemen Koperasi","title":"Aplikasi Koperasi Kantin SMPN 1 Sepatan","desc":"Aplikasi berbasis web untuk mengelola operasional koperasi kantin sekolah secara digital. Sistem mencakup manajemen transaksi jual-beli harian, pencatatan data anggota, serta laporan keuangan sederhana. Dibangun menggunakan PHP Native dan MySQL dengan tampilan antarmuka yang responsif dan mudah digunakan oleh pengelola koperasi.","stack":["PHP Native","MySQL","HTML","CSS","JavaScript"],"role":"Full Stack Developer","year":"2023\u20132024","color":"#1D9E75","img":"assets\/projects\/p1.png"},{"num":"02","tag":"Web App \u00b7 IT Asset Management","title":"Aplikasi IT Asset Management RS Sehat Sejahtera","desc":"Sistem informasi untuk pencatatan, pelacakan, dan pengelolaan aset perangkat IT di lingkungan rumah sakit secara terpusat. Fitur meliputi inventaris perangkat, riwayat pemeliharaan, status kondisi aset, serta laporan aset aktif dan tidak aktif. Dirancang untuk mempermudah tim IT dalam memantau seluruh aset tanpa perlu pencatatan manual.","stack":["PHP Native","MySQL","Bootstrap","JavaScript"],"role":"Full Stack Developer","year":"2024","color":"#378ADD","img":"assets\/projects\/p2.png"},{"num":"03","tag":"Web App \u00b7 Sistem Informasi","title":"Aplikasi Sistem Informasi Masjid Al-Ikhlas","desc":"Platform digital untuk mendukung pengelolaan operasional masjid secara terintegrasi. Mencakup manajemen jadwal shalat dan kegiatan, pencatatan kas masuk dan keluar, serta data anggota dan pengurus. Aplikasi ini mempermudah transparansi keuangan dan penjadwalan kegiatan masjid bagi pengurus dan jamaah.","stack":["PHP Native","MySQL","JavaScript","CSS"],"role":"Full Stack Developer","year":"2024","color":"#BA7517","img":"assets\/projects\/p3.png"},{"num":"04","tag":"Web App \u00b7 Helpdesk & Ticketing","title":"Aplikasi Helpdesk IT RS An-Nisa Tangerang","desc":"Sistem manajemen tiket gangguan IT yang dikembangkan untuk mendukung efisiensi penanganan masalah teknis di lingkungan RS An-Nisa Tangerang. Pengguna dapat membuat tiket laporan kerusakan, memantau status penanganan secara real-time, serta teknisi dapat merespons dan menutup tiket secara terstruktur. Meningkatkan kecepatan dan akuntabilitas tim IT support rumah sakit.","stack":["PHP Native","MySQL","JavaScript","CSS","Bootstrap"],"role":"Contributor \u00b7 IT Intern","year":"2025\u20132026","color":"#7F77DD","img":"assets\/projects\/p4.png"}];
+
+        let currentModal = 0;
+
+        function openModal(idx) {
+            currentModal = idx;
+            const p = projectsData[idx];
+            const modal = document.getElementById('projModal');
+
+            // Color bar
+            document.getElementById('modalImgBar').style.background = p.color;
+
+            // Tag accent color
+            const tagEl = document.getElementById('modalTag');
+            tagEl.textContent = p.tag;
+            tagEl.style.color = p.color;
+            tagEl.style.setProperty('--modal-accent', p.color);
+
+            // Counter
+            document.getElementById('modalCounter').textContent = (idx + 1) + ' / ' + projectsData.length;
+
+            // Title & desc
+            document.getElementById('modalTitle').textContent = p.title;
+            document.getElementById('modalDesc').textContent = p.desc;
+
+            // Role & year
+            document.getElementById('modalRole').textContent = p.role;
+            document.getElementById('modalYear').textContent = p.year;
+
+            // Stack pills
+            const stackEl = document.getElementById('modalStack');
+            stackEl.innerHTML = p.stack.map(t =>
+                `<span class="proj-pill" style="border-color:${p.color}40;color:${p.color};">${t}</span>`
+            ).join('');
+
+            // Image
+            const img = document.getElementById('modalImg');
+            const ph = document.getElementById('modalImgPlaceholder');
+            const numPh = document.getElementById('modalImgNum');
+            img.classList.add('loading');
+            img.src = '';
+            const testImg = new Image();
+            testImg.onload = () => {
+                img.src = p.img;
+                img.alt = p.title;
+                img.style.display = 'block';
+                ph.style.display = 'none';
+                img.classList.remove('loading');
+            };
+            testImg.onerror = () => {
+                img.style.display = 'none';
+                ph.style.display = 'flex';
+                numPh.textContent = p.num;
+            };
+            testImg.src = p.img;
+
+            // Open
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+
+            // Scroll to top of modal box
+            modal.querySelector('.modal-box').scrollTop = 0;
+        }
+
+        function closeModal() {
+            document.getElementById('projModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+
+        function closeModalOutside(e) {
+            if (e.target === document.getElementById('projModal')) closeModal();
+        }
+
+        function modalNav(dir) {
+            const next = (currentModal + dir + projectsData.length) % projectsData.length;
+            openModal(next);
+        }
+
+        /* ---- Certificate Modal ---- */
+        const certData = [{"title":"IT Support RS An-Nisa Tangerang","issuer":"Magang Hub Kementerian Ketenagakerjaan RI","year":"2026","category":"IT Support","img":"assets\/certificates\/c1.jpg"},{"title":"Bootcamp Data Analyst Pakai Excel, SQL, & Persiapan Kerja","issuer":"Karirnex by PT Ebiz Karisma Internasional","year":"2025","category":"Certificate of Appreciation","img":"assets\/certificates\/C3.jpeg"},{"title":"Computer Network Course Level Advanced","issuer":"ITBOX","year":"2026","category":"Certificate of Completion","img":"assets\/certificates\/C1.jpeg"},{"title":"CN-01 Dasar OSI Layer & IP Address","issuer":"ITBOX","year":"2026","category":"Certificate of Completion","img":"assets\/certificates\/C2.jpeg"},{"title":"VSGA Junior Web Developer","issuer":"KOMINFO \u2013 Digital Talent Scholarship","year":"2022","category":"Web Development","img":"assets\/certificates\/C4.png"},{"title":"Introduction to JavaScript","issuer":"Sololearn","year":"2023","category":"Web Development","img":"assets\/certificates\/C5.jpg"},{"title":"TOEFL Prediction Test","issuer":"LBU UNIVERSITAS PAMULANG","year":"2024","category":"Bahasa","img":"assets\/certificates\/C6.jpg"},{"title":"Sertifikat Kompetensi Pemrogram","issuer":"LSP UNIVERSITAS PAMULANG","year":"2025","category":"Pemrograman","img":"assets\/certificates\/C7.jpg"},{"title":"Microsoft Office 2010","issuer":"Mandiri Integrated Computer Course (MICC)","year":"2019","category":"Office Tools","img":"assets\/certificates\/C9.jpeg"},{"title":"Teknik Komputer dan Jaringan","issuer":"PT Indonesia Nippon Seiki","year":"2019","category":"Networking","img":"assets\/certificates\/C8.jpeg"}];
+
+        function openCertModal(idx) {
+            const c = certData[idx];
+            const modal = document.getElementById('certModal');
+            document.getElementById('certModalImg').src = c.img;
+            document.getElementById('certModalImg').alt = c.title;
+            document.getElementById('certModalCategory').textContent = c.category;
+            document.getElementById('certModalYear').textContent = c.year;
+            document.getElementById('certModalTitle').textContent = c.title;
+            document.getElementById('certModalIssuer').textContent = c.issuer;
+            modal.classList.add('open');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCertModal() {
+            document.getElementById('certModal').classList.remove('open');
+            if (!document.getElementById('projModal').classList.contains('open') &&
+                !document.getElementById('plakatLightbox').classList.contains('open')) {
+                document.body.style.overflow = '';
+            }
+        }
+
+        function closeCertModalOutside(e) {
+            if (e.target === document.getElementById('certModal')) closeCertModal();
+        }
+
+        // ESC key close — project modal & cert modal
+        document.addEventListener('keydown', e => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeCertModal();
+            }
+            if (e.key === 'ArrowRight') {
+                if (document.getElementById('projModal').classList.contains('open')) modalNav(1);
+            }
+            if (e.key === 'ArrowLeft') {
+                if (document.getElementById('projModal').classList.contains('open')) modalNav(-1);
+            }
+        });
+
+        /* ---- Plakat Lightbox ---- */
+        document.addEventListener('DOMContentLoaded', function() {
+            var lb = document.getElementById('plakatLightbox');
+            var btnBuka = document.getElementById('btnLihatPlakat');
+            var btnTutup = document.getElementById('btnTutupPlakat');
+
+            console.log('[Plakat] lb:', lb, '| btnBuka:', btnBuka, '| btnTutup:', btnTutup);
+
+            if (!lb || !btnBuka) {
+                console.error('[Plakat] Elemen tidak ditemukan! Cek id plakatLightbox dan btnLihatPlakat');
+                return;
+            }
+
+            function buka() {
+                console.log('[Plakat] Membuka lightbox...');
+                lb.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function tutup() {
+                console.log('[Plakat] Menutup lightbox...');
+                lb.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+
+            btnBuka.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                buka();
+            });
+
+            if (btnTutup) btnTutup.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                tutup();
+            });
+
+            lb.addEventListener('click', function(e) {
+                if (e.target === lb) tutup();
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lb.classList.contains('open')) tutup();
+            });
+        });
+
+        const sections = document.querySelectorAll('section[id], div[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {
+            let curr = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 120) curr = s.id;
+            });
+            navLinks.forEach(a => {
+                a.style.color = a.getAttribute('href') === '#' + curr ? 'var(--accent)' : '';
+            });
+        });
+    </script>
+</body>
+
+</html>
